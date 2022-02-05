@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -12,7 +13,6 @@ import (
 var addrs = []string{
 	"www.google.com",
 	"amazon.com",
-	"microsoft.com",
 }
 
 func uptime(t time.Time) error {
@@ -61,15 +61,21 @@ func checkAll(addrs []string) (map[string]bool, byte) {
 }
 
 func check(addr string) bool {
-	pinger, err := ping.NewPinger("www.google.com")
+	pinger, err := ping.NewPinger(addr)
 	if err != nil {
+		log.Println(err)
 		return false
 	}
+
+	pinger.SetPrivileged(true)
 	pinger.Count = 1
+
 	err = pinger.Run()
 	if err != nil {
+		log.Println(err)
 		return false
 	}
+
 	stats := pinger.Statistics()
 
 	return stats.PacketsSent == stats.PacketsRecv
