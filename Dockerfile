@@ -13,8 +13,8 @@ COPY . ./
 
 RUN go build -o /uptime-cmd
 
-ENV AGGREGATE_PATH=/uptime/aggregate
-ENV LOG_PATH=/uptime/uptime
+ENV UPTIME_AGGREGATE_PATH=/uptime/aggregate
+ENV UPTIME_LOG_PATH=/uptime/uptime
 
 RUN mkdir /uptime
 
